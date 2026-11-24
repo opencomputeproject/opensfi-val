@@ -1,6 +1,6 @@
-[← 2. Compliance with OCP Tenets](../open_silicon_firmware_interface_openSFI_specification.md#2-compliance-with-ocp-tenets) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#3-terminology) | [4. Scope →](scope.md)
+[← 1. Compliance with OCP Tenets](../open_silicon_firmware_interface_openSFI_specification.md#1-compliance-with-ocp-tenets) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#2-terminology) | [3. Scope →](scope.md)
 
-# 3. Terminology
+# 2. Terminology
 
 - **openSFI**: **O**pen-Source **S**ilicon **F**irmware **I**nterface.
   An unified interface between the Host Firmware and the Silicon
@@ -27,7 +27,9 @@
 - **Host Firmware**: Bootloader Firmware executing on a platform host
   processor (aka application processor) such as x86 CPUs based on AMD
   & Intel, or other ISAs such as an ARM SoC. Examples include coreboot
-  (Dasharo and Libreboot etc.) and UEFI (EDK2, Aptio, H2O, etc).
+  (Dasharo and Libreboot etc.) and UEFI (EDK2, Aptio, H2O, etc). In
+  the context of openSFI, this includes all bootloader firmware
+  excluding SiP specific firmware and openSFI.
 
 - **SoC**: System on a Chip, including the CPU (Central Processing
   Unit).
@@ -42,6 +44,17 @@
   (Reference -
   <https://refactoring.guru/design-patterns/factory-method>)
 
+- **Firmware Handoff Transfer List** - Extensible data structure
+  consisting of a fixed-length header and a list of self-describing
+  Transfer Entries. See
+  <https://firmwarehandoff.github.io/firmware_handoff/main/transfer_list.html>
+
+- **Firmware Handoff Transfer Entries (or “Transfer Entries”)** -
+  Variable length self-describing data structure consisting of a
+  fixed-length header and the body. The format of the body is
+  determined by the tag_id field in the header. See
+  <https://firmwarehandoff.github.io/firmware_handoff/main/transfer_list.html#tl-entry-header>
+
 ---
 
-[← 2. Compliance with OCP Tenets](../open_silicon_firmware_interface_openSFI_specification.md#2-compliance-with-ocp-tenets) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#3-terminology) | [4. Scope →](scope.md)
+[← 1. Compliance with OCP Tenets](../open_silicon_firmware_interface_openSFI_specification.md#1-compliance-with-ocp-tenets) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#2-terminology) | [3. Scope →](scope.md)

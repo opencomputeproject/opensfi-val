@@ -1,29 +1,27 @@
-[← 8. API Definition](api-definition.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#9-initialization-stages) | [10. Platform Input Configuration Semantics →](platform-input-configuration-semantics.md)
+[← 9. openSFI Execution Model and Boot Flow](opensfi-execution-model-and-boot-flow.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#10-initialization-stages) | [11. Platform Input Configuration Semantics →](platform-input-configuration-semantics.md)
 
-# 9. Initialization Stages
+# 10. Initialization Stages
 
 Each of the following stages represent a discrete steps in silicon
 bring-up:
 
 ```c
 typedef enum {
-  SFI_INIT_STAGE_LIB_INIT = 0,  ///> Library initialization (Optional)
-  SFI_INIT_STAGE_PRE_MEM,       ///> Pre-memory initialization
-  SFI_INIT_STAGE_MEM_INIT,      ///> DRAM training and memory controller init
-  SFI_INIT_STAGE_IO_INIT,       ///> PCIe, USB, SATA, and other IO
-  SFI_INIT_STAGE_CPU_START,     ///> Core/cluster wake-up
-  SFI_INIT_STAGE_SEC_INIT,      ///> Security controller init (e.g., ASP, ME)
-  SFI_INIT_STAGE_FINALIZE,      ///> Final handoff to OS loader
+  SFI_INIT_STAGE_LIB_INIT = 0,       ///> Library initialization (Optional)
+  SFI_STAGE_GET_SYS_RSC_MAP,         ///> System resource map query
+  SFI_STAGE_SI_RECONFIG,             ///> PCIe, USB, SATA, and other IO
+  SFI_STAGE_RESET_REQUEST,           ///>
+  SFI_STAGE_FINAL_SYS_RSC_MAP,       ///> Finalized resource map
+  SFI_STAGE_PREPARE_FOR_OS_HANDOFF,  ///> Final handoff to OS loader
+  SFI_STAGE_EXIT_HOST_FW,            ///> Tear Down
 } INIT_STAGES;
 ```
 
-The stage identifiers listed in above are illustrative placeholders
-only, and are not intended to represent a finalized or ratified list of
+The stage identifiers listed above are illustrative placeholders only,
+and are not intended to represent a finalized or ratified list of
 silicon lifecycle stages for this revision of the spec. Please refer to
-an aligned list of InitStages in [Appendix C - Unified
-Enumerated Stages
-List](appendix-c-unified-enumerated-stages-list.md#appendix-c---unified-enumerated-stages-list), which
-is expected to be defined in v0.5.
+an aligned list of InitStages in [Appendix C - Unified Enumerated Stages
+List](appendix-c-unified-enumerated-stages-list.md#appendix-c---unified-enumerated-stages-list), which is expected to be defined in v0.5.
 
 These examples are included to facilitate architectural discussions and
 clarify the role of InitializeSilicon() & ExecuteSiliconRuntimeOps()
@@ -34,7 +32,7 @@ will be defined in openSFI v0.5, starting with alignment across x86
 vendors (AMD, Intel) and extending to additional architectures (e.g.,
 ARM) in future revisions (v1.0+).
 
-## 9.1. SFI_INIT_STAGE_LIB_INIT - Library Initialization Metadata Query Stage
+## 10.1. SFI_INIT_STAGE_LIB_INIT - Library Initialization Metadata Query Stage
 
 This ***optional*** stage enables host firmware to query metadata about
 the VAL implementation, including memory sizing recommendations for
@@ -71,8 +69,6 @@ initialization stages.
 
 - The host firmware shall pass:
 
-  - A valid SoCID
-
   - An empty Input structure (or a vendor-defined structure for
     future extensibility)
 
@@ -90,7 +86,7 @@ initialization stages.
 - This stage is optional and may be deprecated in v0.5+ if proven
   unnecessary.
 
-## 9.2. Stage Execution Order Manifest (Normative)
+## 10.2. Stage Execution Order Manifest (Normative)
 
 The numeric values of INIT_STAGES are identifiers, not an execution
 sequence. The host firmware determines execution order per SoC by
@@ -112,12 +108,14 @@ Requirements
     e.g.,
 
     ```c
-    const INIT_STAGES SoC_Init_Sequence[] = {
-      SFI_INIT_STAGE_LIB_INIT,
-      SFI_INIT_STAGE_IO_INIT,
-      SFI_INIT_STAGE_CPU_START,
-      SFI_INIT_STAGE_SEC_INIT,
-      SFI_INIT_STAGE_FINALIZE,
+    const INIT_STAGES SocInitSequence[] = {
+      SFI_INIT_STAGE_LIB_INIT = 0,
+      SFI_STAGE_GET_SYS_RSC_MAP,
+      SFI_STAGE_SI_RECONFIG,
+      SFI_STAGE_RESET_REQUEST,
+      SFI_STAGE_FINAL_SYS_RSC_MAP,
+      SFI_STAGE_PREPARE_FOR_OS_HANDOFF,
+      SFI_STAGE_EXIT_HOST_FW,
     };
     ```
 
@@ -137,4 +135,4 @@ Requirements
 
 ---
 
-[← 8. API Definition](api-definition.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#9-initialization-stages) | [10. Platform Input Configuration Semantics →](platform-input-configuration-semantics.md)
+[← 9. openSFI Execution Model and Boot Flow](opensfi-execution-model-and-boot-flow.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#10-initialization-stages) | [11. Platform Input Configuration Semantics →](platform-input-configuration-semantics.md)

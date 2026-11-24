@@ -1,6 +1,6 @@
-[← 6. Introduction](introduction.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#7-architecture-overview) | [8. API Definition →](api-definition.md)
+[← 5. Introducing - openSFI](introducing-opensfi.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#6-architecture-overview) | [7. SoC Support Determination and Enforcement →](soc-support-determination-and-enforcement.md)
 
-# 7. Architecture Overview
+# 6. Architecture Overview
 
 openSFI adopts a Producer-Consumer API model for its external interface,
 where openSFI acts as the producer and host firmware operates as the
@@ -18,20 +18,17 @@ promoting maintainability and adaptability as hardware evolves.
 
 **Figure 6-1: openSFI Architectural Overview**
 
-![Figure 6-1: openSFI Architectural Overview](../media/image2.png)
+![Figure 6-1: openSFI Architectural Overview](../media/opensfi-architecture-overview.png)
 
 The openSFI interface provides:
 
 - Standardized entry points for silicon initialization
   (InitializeSilicon()) and runtime operations
-  (ExecuteSiliconRuntimeOp()), implemented by a vendor-supplied
+  (ExecutePostSiliconInitOp()), implemented by a vendor-supplied
   Library.
 
 - StageID based lifecycle, with a universal, enumerated superset of
   discrete initialization stages.
-
-- Explicit SoCID targeting to identify the silicon instance and
-  vendor.
 
 - Stage specific Input/Output structures, with optional metadata for
   cross-vendor compatibility.
@@ -44,4 +41,4 @@ The openSFI interface provides:
 
 ---
 
-[← 6. Introduction](introduction.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#7-architecture-overview) | [8. API Definition →](api-definition.md)
+[← 5. Introducing - openSFI](introducing-opensfi.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#6-architecture-overview) | [7. SoC Support Determination and Enforcement →](soc-support-determination-and-enforcement.md)

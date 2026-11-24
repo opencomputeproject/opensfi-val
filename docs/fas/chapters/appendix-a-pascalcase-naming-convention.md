@@ -1,4 +1,4 @@
-[← 12. Governance](governance.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#appendix-a-pascalcase-naming-convention-with-capitalized-acronyms) | [Appendix B - Clarifying Notes →](appendix-b-clarifying-notes.md)
+[← 13. Governance](governance.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#appendix-a-pascalcase-naming-convention-with-capitalized-acronyms) | [Appendix B - Clarifying Notes →](appendix-b-clarifying-notes.md)
 
 # Appendix A PascalCase Naming Convention (with Capitalized Acronyms)
 
@@ -27,7 +27,7 @@ and scalable code design across the openSFI and UPCI ecosystems.
 
 **Examples**:
 
-- IFSTCPUTargets
+- FIXTCPUTargets
 
 - Stage1CPUTargets
 
@@ -139,4 +139,4 @@ codebase.
 
 ---
 
-[← 12. Governance](governance.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#appendix-a-pascalcase-naming-convention-with-capitalized-acronyms) | [Appendix B - Clarifying Notes →](appendix-b-clarifying-notes.md)
+[← 13. Governance](governance.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#appendix-a-pascalcase-naming-convention-with-capitalized-acronyms) | [Appendix B - Clarifying Notes →](appendix-b-clarifying-notes.md)
