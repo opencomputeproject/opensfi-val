@@ -41,8 +41,7 @@
         fixed-format output structures.
 
 3.  **StageIDs** – When defined as an enumerated list, StageIDs must be
-    universal and represent a superset across all SoCIDs and all SoC
-    vendors.
+    universal and represent a superset across all SoC vendors.
 
 4.  **Input Structure Definitions** – These must be StageID specific
     and universal across all SoC vendors. Metadata can indicate if a

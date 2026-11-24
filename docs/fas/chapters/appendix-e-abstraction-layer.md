@@ -20,9 +20,10 @@ specification<mark>. It describes a common C-based API for invoking silicon
 lifecycle operations (initialization and runtime). These interfaces are
 stable and documented, and include:</mark>
 
-- int InitializeSilicon(...)
-
-- int ExecuteSiliconRuntimeOp(...)
+```c
+int InitializeSilicon(...)
+int ExecuteSiliconRuntimeOp(...)
+```
 
 The abstraction layer standardizes the interface surface, enabling
 consistent API calls from the host firmware (the consumer), regardless
@@ -32,7 +33,7 @@ Example:
 
 ```c
 // Defined by openSFI Spec - implemented by the silicon vendor
-int InitializeSilicon(void *Input, void *Output, uint32_t Stage, uint32_t SoCID);
+int InitializeSilicon(void *Input, void *Output, uint32_t Stage);
 ```
 
 This function is the contract between host firmware and the silicon
@@ -66,7 +67,7 @@ Example Platform Integrator Implementation:
 
 ```c
 // openSFIShim.c
-int InitializeSilicon(void *Input, void *Output, uint32_t InitStageID, uint32_t SoCID) {
+int InitializeSilicon(void *Input, void *Output, uint32_t InitStageID) {
   if (IsAMDSoC(SoCID)) {
     return InitializeAmdSilicon(Input, Output, InitStageID, SoCID);
   } else if (IsIntelSoC(SoCID)) {

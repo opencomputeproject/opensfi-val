@@ -1,4 +1,4 @@
-[← 7. Architecture Overview](architecture-overview.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#8-api-definition) | [9. Initialization Stages →](initialization-stages.md)
+[← 7. SoC Support Determination and Enforcement](soc-support-determination-and-enforcement.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#8-api-definition) | [9. openSFI Execution Model and Boot Flow →](opensfi-execution-model-and-boot-flow.md)
 
 # 8. API Definition
 
@@ -14,18 +14,17 @@ Spec)](appendix-e-abstraction-layer.md#appendix-e---abstraction-layer-defined-in
 
 ## 8.1. InitializeSilicon()
 
-This API is the common / unified (across the SoC vendors) entry point
-for silicon initialization during platform boot stages.
+This API is the entry point for silicon initialization during platform
+boot stages.
 
 **Prototype:**
 
 ```c
-int
+SFIStatus
 InitializeSilicon (
-  void      *Input,
-  void      *Output,
-  uint32_t  Stage,
-  uint32_t  SoCID
+  void      *SFIInput,
+  void      *SFIOutput,
+  uint32_t  InitStageID
   );
 ```
 
@@ -33,42 +32,32 @@ InitializeSilicon (
 
 |  |  |
 |:---|:---|
-| Input | Pointer to InitStageID specific silicon configuration input structure |
-| Output | Pointer to InitStageID specific structure with return status, diagnostics data or handoff buffer |
-| InitStageID | Enum indicating the silicon init phase (e.g., PRE_MEM, MEM_INIT, IO_INIT) |
-| SoCID | Vendor-specific identifier for target SoC configuration |
+| SFIInput | Pointer to a contiguous InitStageID specific silicon configuration input structure |
+| SFIOutput | Pointer to a contiguous InitStageID specific structure with return data, diagnostics data or handoff buffer |
+| InitStageID | Enum indicating the silicon initialization phase |
 
 **Return Value(s):**
+
+- SFIStatus
 
 |          |                             |
 |:---------|:----------------------------|
 | zero     | Success                     |
 | non-zero | Error (error codes **TBD**) |
 
-Notes:
+## 8.2. ExecutePostSiliconInitOp()
 
-- **SoCID Usage – Forward-Looking Clarification**
-
-The definition and role of SoCID, particularly whether it should be
-explicitly included as part of input/output structures, is currently
-under review. A clearer position will be established and reflected in
-the specification starting with v0.5+, in alignment with design goals
-for scalability and abstraction.
-
-## 8.2. ExecuteSiliconRuntimeOp()
-
-This API is used for executing runtime lifecycle operations on silicon
+This API is used for executing operations on silicon
 post-initialization.
 
 **Prototype:**
 
 ```c
-int
-ExecuteSiliconRuntimeOp (
-  void      *Input,
-  void      *Output,
-  uint32_t  RuntimeStageID,
-  uint32_t  SoCID
+SFIStatus
+ExecutePostSiliconInitOp (
+  void      *SFIInput,
+  void      *SFIOutput,
+  uint32_t  PostInitOpsID
   );
 ```
 
@@ -76,12 +65,13 @@ ExecuteSiliconRuntimeOp (
 
 |  |  |
 |:---|:---|
-| Input | Pointer to RuntimeStageID specific input structure |
-| Output | Pointer to RuntimeStageID specific output structure with return status, diags data or handoff buffer |
-| RuntimeStageID | Enum defining the type of lifecycle action (e.g. telemetry, reconfiguration) |
-| SoCID | Vendor-specific identifier for target SoC or board configuration |
+| SFIInput | Pointer to a contiguous PostInitOpsID specific input structure |
+| SFIOutput | Pointer to a contiguous PostInitOpsID specific output structure with return status, diags data or handoff buffer |
+| RuntimeOpsID | Enum defining the type of lifecycle action (e.g. telemetry, reconfiguration) |
 
 **Returns Value(s):**
+
+- SFIStatus
 
 |          |                             |
 |:---------|:----------------------------|
@@ -94,16 +84,76 @@ subset based on silicon capabilities.
 
 Notes:
 
-- **Scope Clarification for ExecuteSiliconRuntimeOp()**
+- **Scope Clarification for ExecutePostSiliconInitOp()**
 
-The definition and intended scope of ExecuteSiliconRuntimeOp() are not
-yet finalized in v0.3. It remains under discussion whether this
+The definition and intended scope of ExecutePostSiliconInitOp() are
+not yet finalized in v0.5. It remains under discussion whether this
 operation is meant to service silicon bound runtime services during OS
 runtime, or to target a transitional phase after silicon
 initialization completes but before OS handoff, or both. This
 ambiguity is expected to be resolved in v0.5+, along with a more
 definitive API contract.
 
+## 8.3. HostFWMain()
+
+This API defines the signature for the host firmware main entry point
+to be called following the Vendor-Owned Early
+Initialization stage. This API is
+defined by openSFI, but implementation is left to host firmware.
+
+**Prototype:**
+
+```c
+void
+HostFWMain (
+  void  *SFIMemData
+  );
+```
+
+**Arguments:**
+
+|  |  |
+|:---|----|
+| SFIMemData | Pointer to a structure containing a description of the early (temporary) memory map. |
+
+**Return Value(s):**
+
+- None
+
+## 8.4. Library Model, State, and Ownership
+
+openSFI APIs are intended to be consumed as statically linked libraries
+integrated into the host firmware image. From the perspective of the
+host firmware, the openSFI API surface is defined to be stateless.
+
+Silicon implementations shall not rely on persistent internal state
+across API invocations, unless such state is explicitly represented in
+openSFI-defined data structures exchanged with the host firmware.
+
+All openSFI-defined input and output data structures are caller-owned:
+
+- The host firmware is responsible for allocating, owning, and
+  maintaining the lifetime of all openSFI data structures.
+
+- Silicon firmware may read and update structures passed by reference
+  during an invocation.
+
+- Silicon firmware shall not assume ownership of these structures and
+  shall not retain hidden state across invocations.
+
+All openSFI APIs use pointer-based calling conventions. Unless
+explicitly stated otherwise, structure arguments passed to openSFI APIs
+shall be pointers, and callers shall pass the address of the structure
+(e.g., using the & operator in C).
+
+This model ensures that platform state is explicit, inspectable, and
+portable, and prevents the introduction of implicit or opaque state
+within silicon implementations.
+
+### 8.4.1. XFERLIST_SMBIOS_RECORD
+
+### 8.4.2. XFERLIST_BOOT_MODE
+
 ---
 
-[← 7. Architecture Overview](architecture-overview.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#8-api-definition) | [9. Initialization Stages →](initialization-stages.md)
+[← 7. SoC Support Determination and Enforcement](soc-support-determination-and-enforcement.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#8-api-definition) | [9. openSFI Execution Model and Boot Flow →](opensfi-execution-model-and-boot-flow.md)

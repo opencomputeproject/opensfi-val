@@ -1,4 +1,4 @@
-![openSFI specification cover](media/image12.png)
+![openSFI specification cover](media/opensfi-specification-cover.png)
 
 Open Platform Firmware
 
@@ -6,7 +6,7 @@ Open Silicon Firmware Interface (openSFI)
 
 Firmware Architecture Specification (FAS)
 
-Version 0.3
+Version 0.5
 
 Authors:
 
@@ -16,19 +16,20 @@ Raj Kapoor (AMD), Albert Rennie (AMD), Srini Narayana (AMI), Tim Lewis
 Collaborators:
 
 Allison Goodman (Intel), Michael Kinney (Intel), Felix Polyodov (AMI),
-Giri Mudusuru (Microsoft), Ian Goegebuer (Google), Paul Grimes (AMD),
-Pradeep Gopal (AMD), Christian Walter (9 Elements), Senthil
+Giri Mudusuru (Microsoft), Dan Holmes-Mitra (Google), Paul Grimes
+(AMD), Pradeep Gopal (AMD), Christian Walter (9 Elements), Senthil
 Ramakrishnan (ARM), Jose Marinho (ARM), Jean-Marie Verdun (HPE), Nil
 Ge (ByteDance), Hancock Chang (MiTAC), Piotr Król (3mdeb), Amos Bu
-(OSFF)
+(OSFF), May Zhu (Dell Technologies)
 
 # Version History
 
 | **Date** | **Version \#** | **Author** | **Description** |
 |----|----|----|----|
 | 27 MAY ‘25 | 0.0.1 | Paul Grimes | Initial Release |
-| 02 JUN ‘25 | 0.3 DRAFT | Albert Rennie<br>Raj Kapoor | \- Added Technical details throughout the document. Ready for OPF review.<br>- Added [Chapter 10 - Abstraction Layer](chapters/appendix-e-abstraction-layer.md#appendix-e---abstraction-layer-defined-interface-spec)<br>- Added [Chapter 11 - Platform Configuration](chapters/platform-input-configuration-semantics.md#10-platform-input-configuration-semantics)<br>- Overhauled [Chapter 11 - Platform Input Configuration Semantics](chapters/platform-input-configuration-semantics.md#10-platform-input-configuration-semantics)<br>- Added [Appendix B - Clarifying Notes](chapters/appendix-b-clarifying-notes.md#appendix-b---clarifying-notes)<br>- Added [Appendix C - Unified Enumerated Stages List](chapters/appendix-c-unified-enumerated-stages-list.md#appendix-c---unified-enumerated-stages-list)<br>- [License](#license) changed back to CC BY 4.0 per discussion in Mar 2025 F2F<br>- Added clarifying notes for SOCID & ExecuteSiliconRuntimeOp() at the bottom of [Section 8.2](chapters/api-definition.md#82-executesiliconruntimeop)<br>- Added Clarifying Notes for VAL in the [Terminology Section](chapters/terminology.md#3-terminology) |
-| 23 SEP’25 | 0.3 | Albert Rennie<br>Raj Kapoor | Voting Roster for OPF Ratification - COMPLETE<br>Ready for OCP Steering Committee WG Review<br>• This document will be frozen, and v0.5 DRAFT will be started based on this version.<br>• **OCP SC Approved - 09 SEP’25 (v0.3 FROZEN)** |
+| 02 JUN ‘25 | 0.3 DRAFT | Albert Rennie<br>Raj Kapoor | \- Added Technical details throughout the document. Ready for OPF review.<br>- Added [Chapter 10 - Abstraction Layer](chapters/appendix-e-abstraction-layer.md#appendix-e---abstraction-layer-defined-interface-spec)<br>- Added [Chapter 11 - Platform Configuration](chapters/platform-input-configuration-semantics.md#11-platform-input-configuration-semantics)<br>- Overhauled [Chapter 11 - Platform Input Configuration Semantics](chapters/platform-input-configuration-semantics.md#11-platform-input-configuration-semantics)<br>- Added [Appendix B - Clarifying Notes](chapters/appendix-b-clarifying-notes.md#appendix-b---clarifying-notes)<br>- Added [Appendix C - Unified Enumerated Stages List](chapters/appendix-c-unified-enumerated-stages-list.md#appendix-c---unified-enumerated-stages-list)<br>- [License](#license) changed back to CC BY 4.0 per discussion in Mar 2025 F2F<br>- Added clarifying notes for SOCID & ExecuteSiliconRuntimeOp() at the bottom of [Section 8.2](chapters/api-definition.md#82-executepostsiliconinitop)<br>- Added Clarifying Notes for VAL in the [Terminology Section](chapters/terminology.md#2-terminology) |
+| 23 SEP’25 | 0.3 | Albert Rennie<br>Raj Kapoor | Voting Roster for OPF Ratification - COMPLETE<br>Ready for OCP Steering Committee WG Review<br>• This document will be frozen, and v0.5 DRAFT will be started based on this version.<br>• **OCP SC Approved - 09 SEP’25 (v0.3 FROZEN)**<br>• Link to [openSFI Firmware Architecture Specification v0.3](https://www.opencompute.org/documents/open-silicon-firmware-interface-opensfi-specification-v0-3-pdf) |
+| 24 SEP’25 | 0.5<br>DRAFT | [Raj Kapoor](mailto:raj.kapoor@amd.com) | • Ready for v0.5 content<br>• All previous comments maintained<br>• Voting Roster reset<br>• Version changed to 0.5<br>• DRAFT watermark back on<br>• v0.3 Link added in the above row for v0.3<br>• Reverting RuntimeStageID to RuntimeOpsID<br>• Changed return var int to SFIInitStatus and SFIRuntimeStatus<br>• Deprecated host-provided SoC ID parameters and standardized hardware-derived SoC support enforcement via SFI_STATUS_UNSUPPORTED_SOC<br>• Changed scope to now include non x86 ISA.<br>• Updated Initialization Stages<br>• Added Silicon Initialization Flow<br>• Added Dell Technologies to the Voting Roster and the Collaborators list. |
 
 # License
 
@@ -73,7 +74,7 @@ at
 <http://www.opencompute.org/participate/legal-documents/>
 . If you have any questions, please contact OCP.
 
-# 1. Acknowledgements
+# Acknowledgements
 
 The Authors of this Specification would like to acknowledge the
 following for their feedback:
@@ -83,67 +84,75 @@ Enterprise (HPE), Intel,
 
 Insyde, Microsoft, MiTAC
 
-# 2. Compliance with OCP Tenets
+# 1. Compliance with OCP Tenets
 
-## 2.1. Openness
+## 1.1. Openness
 
 Promotes openness and efficiency by enabling third parties to build,
 modify, and personalize a unified firmware interface that is compatible
 across multiple platforms and silicon architectures.
 
-## 2.2. Efficiency
+## 1.2. Efficiency
 
 Reduce operational expenses, capital expenses and carbon emissions
 through a unified firmware interface. This enables efficient resource
 utilization, streamlines development processes, and eliminates redundant
 engineering efforts.
 
-## 2.3. Impact
+## 1.3. Impact
 
 Has transformative impacts on the industry by accelerating
 time-to-market with standardized interfaces.
 
-## 2.4. Sustainability
+## 1.4. Sustainability
 
 Enables optimization of code to reduce resource consumption.
 
-# 3. Terminology
+# 2. Terminology
 
 [Read this chapter →](chapters/terminology.md)
 
-# 4. Scope
+# 3. Scope
 
 [Read this chapter →](chapters/scope.md)
 
-# 5. Problem Statement
+# 4. Problem Statement
 
 [Read this chapter →](chapters/problem-statement.md)
 
-# 6. Introduction
+# 5. Introducing - openSFI
 
-[Read this chapter →](chapters/introduction.md)
+[Read this chapter →](chapters/introducing-opensfi.md)
 
-# 7. Architecture Overview
+# 6. Architecture Overview
 
 [Read this chapter →](chapters/architecture-overview.md)
+
+# 7. SoC Support Determination and Enforcement
+
+[Read this chapter →](chapters/soc-support-determination-and-enforcement.md)
 
 # 8. API Definition
 
 [Read this chapter →](chapters/api-definition.md)
 
-# 9. Initialization Stages
+# 9. openSFI Execution Model and Boot Flow
+
+[Read this chapter →](chapters/opensfi-execution-model-and-boot-flow.md)
+
+# 10. Initialization Stages
 
 [Read this chapter →](chapters/initialization-stages.md)
 
-# 10. Platform Input Configuration Semantics
+# 11. Platform Input Configuration Semantics
 
 [Read this chapter →](chapters/platform-input-configuration-semantics.md)
 
-# 11. Standards Alignment
+# 12. Standards Alignment
 
 [Read this chapter →](chapters/standards-alignment.md)
 
-# 12. Governance
+# 13. Governance
 
 [Read this chapter →](chapters/governance.md)
 
@@ -170,3 +179,11 @@ Enables optimization of code to reduce resource consumption.
 # Appendix F
 
 [Read this chapter →](chapters/appendix-f-sc-approval-checklist.md)
+
+# Appendix G - Example Structures and Enumerations from Normative Specifications
+
+[Read this chapter →](chapters/appendix-g-example-structures-and-enumerations.md)
+
+# Appendix H- Deprecating SoCID from the openSFI API
+
+[Read this chapter →](chapters/appendix-h-deprecating-socid.md)

@@ -1,6 +1,6 @@
-[← 4. Scope](scope.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#5-problem-statement) | [6. Introduction →](introduction.md)
+[← 3. Scope](scope.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#4-problem-statement) | [5. Introducing - openSFI →](introducing-opensfi.md)
 
-# 5. Problem Statement
+# 4. Problem Statement
 
 Modern day host firmware lacks a unified interface to interact with
 silicon initialization code from different silicon vendors. As a result,
@@ -12,7 +12,7 @@ for each host SoC architecture. This results in extended development
 timelines, increased support overhead, higher maintenance costs, and
 inefficient resource utilization.
 
-![Today: vertical host firmware teams per SoC vendor (AMD openSIL vs. Intel FSP)](../media/image4.png)
+![Today: vertical host firmware teams per SoC vendor (AMD openSIL vs. Intel FSP)](../media/vertical-host-fw-teams.png)
 
 The design and maintenance of host firmware is increasingly
 unsustainable as silicon diversity grows. Platform integrators must
@@ -33,7 +33,7 @@ refactoring to changes in vendor specific silicon initialization
 architecture. Furthermore, opaque silicon init flows hinder security
 auditing, transparency, and validation.
 
-![Today: OEM/ODM/IFV-specific abstraction layers over each vendor's silicon init](../media/image3.png)
+![Today: OEM/ODM/IFV-specific abstraction layers over each vendor's silicon init](../media/ifv-specific-abstraction-layer.png)
 
 Finally, redundant engineering and infrastructure overhead for
 duplicated firmware validation contributes negatively to sustainability
@@ -42,4 +42,4 @@ critical gap in the ecosystem that openSFI aims to address.
 
 ---
 
-[← 4. Scope](scope.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#5-problem-statement) | [6. Introduction →](introduction.md)
+[← 3. Scope](scope.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#4-problem-statement) | [5. Introducing - openSFI →](introducing-opensfi.md)

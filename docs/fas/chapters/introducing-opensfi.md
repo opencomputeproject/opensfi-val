@@ -1,6 +1,6 @@
-[← 5. Problem Statement](problem-statement.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#6-introduction) | [7. Architecture Overview →](architecture-overview.md)
+[← 4. Problem Statement](problem-statement.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#5-introducing---opensfi) | [6. Architecture Overview →](architecture-overview.md)
 
-# 6. Introduction
+# 5. Introducing - openSFI
 
 The Open Silicon Firmware Interface (openSFI) is a specification that
 defines a common, architecture-neutral interface for host firmware to
@@ -9,17 +9,17 @@ modular, scalable, and vendor-agnostic integration of silicon into host
 firmware environments.
 
 **openSFI Specification is the Foundational Contract**. Host firmware
-doesn’t care how the silicon initialization is implemented. It just
+should not care how the silicon initialization is implemented. It just
 needs a clean, stable API contract to call the right function, with the
 right inputs, and get deterministic outputs.
 
-## 6.1. Description
+## 5.1. Description
 
 openSFI aims to address the fragmentation and fragility in firmware
 systems by defining a common silicon firmware interface. This design
-specification focuses on creating a scalable and flexible framework that
-enhances interoperability across various silicon platforms. Key features
-include:
+specification focuses on creating a scalable and flexible framework
+that enhances interoperability across various silicon platforms. Key
+features include:
 
 - **Unified Interface Definition:** openSFI will standardize
   interactions between host firmware and silicon vendors, simplifying
@@ -36,20 +36,20 @@ include:
   participants to bridge ecosystem gaps while maintaining backward
   compatibility.
 
-## 6.2. Scope
+## 5.2. Scope
 
 openSFI defines a standard interface between host firmware and silicon
 lifecycle management components, supporting both initialization and
 post-boot operations.
 
 The openSFI specification defines a C-based interface between host
-firmware and silicon initialization components (e.g., AMD openSIL, Intel
-FSP). It is targeted at x86 SoCs for the initial release but designed to
-be ISA-neutral. openSFI standardizes early boot silicon initialization
-during the SEC, PEI, and early DXE phases (in UEFI terminology), or
-equivalent early stages in other firmware frameworks like coreboot.
+firmware and silicon initialization components (e.g., AMD openSIL,
+Intel FSP, ARM Trusted FW). It is targeted to be ISA-neutral. openSFI
+standardizes early boot silicon initialization during the SEC, PEI,
+and early DXE phases (in UEFI terminology), or equivalent early stages
+in other firmware frameworks like coreboot.
 
-## 6.3. Goals
+## 5.3. Goals
 
 The primary goals of the openSFI are to:
 
@@ -64,7 +64,44 @@ The primary goals of the openSFI are to:
 - **Promote** sustainability through efficient resource usage and
   common tooling.
 
-## 6.4. Interface Compatibility Testing
+## 5.4. Naming Principles (Informative)
+
+This specification defines phase and stage terminology based on
+functional responsibilities rather than relative positioning within a
+platform’s execution timeline.
+
+To ensure consistency and portability across architectures and host
+firmware implementations, the following principles are applied:
+
+- ***Function-Based Naming***
+
+  Phases and stages are named according to the responsibilities they
+  represent (for example, initialization, resource allocation, or OS
+  handoff), rather than when they occur in a given implementation.
+
+- ***Avoidance of Relative Terms***
+
+  Relative terms such as “early,” “mid,” or “late” are avoided where
+  possible, as they are inherently dependent on
+  implementation-specific timelines and may vary across architectures
+  and firmware frameworks.
+
+- ***Architecture Agnostic Terminology***
+
+  Terminology is selected to remain consistent across different
+  silicon providers and host firmware implementations, without
+  implying a specific execution model.
+
+- ***Stability Across Implementations***
+
+  Names are chosen to remain stable even as underlying silicon
+  architectures and firmware implementations evolve over time.
+
+These principles enable the specification to provide a normalized and
+portable abstraction of platform initialization, independent of the
+underlying execution flow.
+
+## 5.5. Interface Compatibility Testing
 
 Interface compatibility testing for openSFI ensures predictable
 interoperability across diverse silicon platforms while maintaining
@@ -105,12 +142,12 @@ adherence to established interface definitions.
     robustness of implementation ensuring no unwanted side effects
     such as data corruption occurs.
 
-## 6.5. Standards Interoperability (Non-Normative) Compliance
+## 5.6. Standards Interoperability (Non-Normative) Compliance
 
-openSFI does not establish or replace external industry standards (e.g.,
-ACPI, SMBIOS, UEFI). However, implementations must not preclude standard
-host firmware behavior or break assumptions made by standards compliant
-firmware frameworks and operating systems.
+openSFI does not establish or replace external industry standards
+(e.g., ACPI, SMBIOS, UEFI). However, implementations must not preclude
+standard host firmware behavior or break assumptions made by standards
+compliant firmware frameworks and operating systems.
 
 In practice, this means:
 
@@ -129,15 +166,15 @@ In practice, this means:
   structurally sufficient and unambiguous so the host can
   deterministically assemble fully compliant tables/records.
 
-Here's a succinct example (ACPI): A VAL may return ACPI ready fragments
-(e.g. CPU topology, memory map deltas, device resources) that are not
-complete ACPI tables by themselves. These fragments MUST be formatted
-and annotated such that the host firmware can compose fully compliant
-ACPI structures (e.g. MADT, SRAT, SLIT, HEST) without guessing or vendor
-specific heuristics. Failure to meet this requirement risks breaking OS
-expectations and is non-conformant with openSFI’s interoperability
-rules.
+Here's a succinct example (ACPI): A VAL may return ACPI ready
+fragments (e.g. CPU topology, memory map deltas, device resources)
+that are not complete ACPI tables by themselves. These fragments MUST
+be formatted and annotated such that the host firmware can compose
+fully compliant ACPI structures (e.g. MADT, SRAT, SLIT, HEST) without
+guessing or vendor specific heuristics. Failure to meet this
+requirement risks breaking OS expectations and is non-conformant with
+openSFI’s interoperability rules.
 
 ---
 
-[← 5. Problem Statement](problem-statement.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#6-introduction) | [7. Architecture Overview →](architecture-overview.md)
+[← 4. Problem Statement](problem-statement.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#5-introducing---opensfi) | [6. Architecture Overview →](architecture-overview.md)

@@ -1,4 +1,4 @@
-[← Appendix E - Abstraction Layer (Defined Interface Spec)](appendix-e-abstraction-layer.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#appendix-f)
+[← Appendix E - Abstraction Layer (Defined Interface Spec)](appendix-e-abstraction-layer.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#appendix-f) | [Appendix G - Example Structures and Enumerations from Normative Specifications →](appendix-g-example-structures-and-enumerations.md)
 
 # Appendix F
 
@@ -17,4 +17,4 @@ where it is described in this spec or an external document .
 
 ---
 
-[← Appendix E - Abstraction Layer (Defined Interface Spec)](appendix-e-abstraction-layer.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#appendix-f)
+[← Appendix E - Abstraction Layer (Defined Interface Spec)](appendix-e-abstraction-layer.md) | [↑ Back to the specification](../open_silicon_firmware_interface_openSFI_specification.md#appendix-f) | [Appendix G - Example Structures and Enumerations from Normative Specifications →](appendix-g-example-structures-and-enumerations.md)
