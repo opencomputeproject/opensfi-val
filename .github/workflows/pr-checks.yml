@@ -1,0 +1,42 @@
+# Checks every pull request against the conventions in
+# .github/docs/CONTRIBUTING.md and labels it by its branch prefix.
+# The checks are in .github/scripts/pr_checks.py.
+#
+# This uses pull_request_target so it can label pull requests from forks.
+# It checks out the base branch, never the pull request's code, so the
+# write token is not exposed to untrusted code.
+
+name: PR checks
+
+on:
+  pull_request_target:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: pr-checks-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  conventions:
+    name: Branch, title, and linked issue
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the checks script from the base branch
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check the pull request
+        run: python .github/scripts/pr_checks.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

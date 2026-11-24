@@ -1,0 +1,30 @@
+name: Documentation change
+description: Propose a change to the specification, READMEs, guides, or comments.
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Search the existing issues before opening a new one.
+  - type: input
+    id: location
+    attributes:
+      label: Document and section
+      description: Which document, and which section, does this affect?
+      placeholder: e.g. openSFI FAS, section 7.2
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What needs to change
+      description: What is wrong, missing, or unclear?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Suggested wording or outline, if you have one.
+    validations:
+      required: false
